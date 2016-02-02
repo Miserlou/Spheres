@@ -78,6 +78,16 @@
             /* Drag'n drop stuff */
             window.ondragover = function(e) {e.preventDefault()}
             window.ondrop = function(e) {e.preventDefault(); upload(e.dataTransfer.files[0]); }
+            function uploadProgress(evt) {
+              if (evt.lengthComputable) {
+                var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+                $('#drop').text('Uploading.. ' + percentComplete.toString() + '%');
+              }
+              else {
+                $('#drop').text('Uploading.. Zero%');
+              }
+            }
+
             function upload(file) {
 
                 /* Is the file an image? */
@@ -87,6 +97,7 @@
                 var fd = new FormData();
                 fd.append("image", file); 
                 var xhr = new XMLHttpRequest();
+                xhr.upload.addEventListener("progress", uploadProgress, false);
                 xhr.open("POST", "https://api.imgur.com/3/image.json");
                 xhr.onload = function() {
                     $('#drop').text('Done!');
