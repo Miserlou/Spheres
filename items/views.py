@@ -16,7 +16,7 @@ def upload(request):
             item = form.save()
             return HttpResponseRedirect(reverse('view_item', kwargs={'item_id': item.pk}))
 
-    items = Item.objects.all().order_by('-pk')
+    items = Item.objects.all().order_by('-pk')[:50]
     form = ItemForm()
 
     return render_to_response('upload.html', {'items': items, 'form': form}, context_instance=RequestContext(request))
