@@ -100,13 +100,20 @@
                 xhr.upload.addEventListener("progress", uploadProgress, false);
                 xhr.open("POST", "https://api.imgur.com/3/image.json");
                 xhr.onload = function() {
-                    $('#drop').text('Done!');
+                    $('#drop').text('Done, saving..');
+                    $('#debugger').text(xhr.responseText);
+                    $('#debugger2').text(JSON.parse(xhr.responseText).data.link);
+                    if(!(JSON.parse(xhr.responseText).data.success)){
+                        $('#drop').text('File was too large for imgur. :(');
+                        return;
+                    }
                     $('#id_url').val(JSON.parse(xhr.responseText).data.link);
                     $('#id_thumb_url').val(JSON.parse(xhr.responseText).data.link.replace('.jpg', 'm.jpg'));
                     $('#itemform').submit();
+                    $('#drop').text('Done!');
                 }
                 
-                xhr.setRequestHeader('Authorization', 'Client-ID 28aaa2e823b03b1');
+                xhr.setRequestHeader('Authorization', 'Client-ID 3193e4d92019195');
                 xhr.send(fd);
             }
         </script>
@@ -117,7 +124,7 @@
           <div class="col-md-12">
 
           {% for item in items %}
-            <a href="{% url 'view_item' item.pk %}"><img src="{{item.thumb_url}}" class="img-thumbnail" style="width: 28%; margin: 1%"></a>
+            <a href="{% url 'view_item' item.pk %}"><img src="{{item.https_thumb}}" class="img-thumbnail" style="width: 28%; margin: 1%"></a>
           {% endfor %}
 
           </div>
@@ -127,7 +134,7 @@
       <br />
 
       <div>
-        <form method="post" id="itemform" class="hidden">
+        <form method="post" id="itemform" style="display: none">
         {%csrf_token %}
           {{form}}
           <input type="submit">

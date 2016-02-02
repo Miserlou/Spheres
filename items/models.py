@@ -12,6 +12,9 @@ class Item(models.Model):
     def __unicode__(self):
         return self.title
 
+    def https_thumb(self):
+        return self.thumb_url.replace('http', 'https')
+
 class ItemForm(ModelForm):
     class Meta:
         model = Item
