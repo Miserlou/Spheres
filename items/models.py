@@ -15,6 +15,9 @@ class Item(models.Model):
     def https_thumb(self):
         return self.thumb_url.replace('http', 'https')
 
+    def https_url(self):
+        return self.thumb_url.replace('http', 'https')
+
 class ItemForm(ModelForm):
     class Meta:
         model = Item
