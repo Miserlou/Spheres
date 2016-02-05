@@ -103,9 +103,10 @@
                     $('#drop').text('Done, saving..');
                     $('#debugger').text(xhr.responseText);
                     $('#debugger2').text(JSON.parse(xhr.responseText).data.link);
-                    if(!(JSON.parse(xhr.responseText).data.success)){
+                    if(!(JSON.parse(xhr.responseText).data.id)){
                         $('#drop').text('File was too large for imgur. :(');
-                        return;
+                        console.log(JSON.parse(xhr.responseText).data);
+			return;
                     }
                     $('#id_url').val(JSON.parse(xhr.responseText).data.link);
                     $('#id_thumb_url').val(JSON.parse(xhr.responseText).data.link.replace('.jpg', 'm.jpg'));
